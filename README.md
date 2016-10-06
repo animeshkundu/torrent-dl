@@ -7,6 +7,7 @@ Command line tool to watch torrents
 Installation
 ------------
 sudo apt-get install libtorrent-rasterbar8
+
 pip install -r requirements.txt
 
 
