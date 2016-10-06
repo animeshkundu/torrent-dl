@@ -1,4 +1,3 @@
-#! /usr/bin/env python2
 from __future__ import division
 
 import argparse
@@ -233,7 +232,7 @@ def main():
     parser.add_argument("magnet", nargs='?', default=None)
     parser.add_argument("--serve", action="store_true")
     parser.add_argument("--port", "-p", default="8888")
-    parser.add_argument("--download", "-d", default=self.settings.save_path)
+    parser.add_argument("--download", "-d", default=None)
 
     args = parser.parse_args()
 
