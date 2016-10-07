@@ -14,7 +14,7 @@ Requires .deb and pypi packaging
 
 Installation on Ubuntu
 -----------------------
-sudo apt-get install libtorrent-rasterbar8 python-libtorrent
+sudo apt-get install libtorrent-rasterbar8 python-libtorrent vlc
 
 pip install -r requirements.txt
 
@@ -23,6 +23,10 @@ Installation on Mac OS
 ----------------------
 
 brew update
+
+brew install caskroom/cask/brew-cask
+
+brew cask install vlc
 
 brew install boost --build-from-source --with-python --universal
 
