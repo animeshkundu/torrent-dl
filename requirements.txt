@@ -10,7 +10,6 @@ Ojota==3.1.2
 pyaml==16.9.0
 python-daemon==2.1.1
 python-dateutil==2.5.3
-python-libtorrent==1.0.3
 PyYAML==3.12
 qtfaststart==1.8
 rebulk==0.7.6
