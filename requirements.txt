@@ -7,7 +7,6 @@ guessit==2.1.0
 lockfile==0.12.2
 netifaces==0.10.5
 Ojota==3.1.2
-pkg-resources==0.0.0
 pyaml==16.9.0
 python-daemon==2.1.1
 python-dateutil==2.5.3
