@@ -1,11 +1,15 @@
-Pyflix
-======
+torrent-dl
+==========
 
-Command line tool to simultaneously watch and download a torrent with seek functionality.
+Popcorn Time was/is a really cool solution to play torrents directly while its being downloaded in the background, if you can get one of the installers to work. I really love Peerflix, it just works. 
 
-torrent-dl -d ~/Downloads/ [ copy paste magnet link here ( Use quotes if neccessary ) ]
+This is a port of my beloved peerflix to python. I really need to get it to packaging it, so that I can just apt-get it :)
 
-It will automatically launch vlc to play once it has downloaded 3.5% of the torrent.
+You can simultaneously watch and download a torrent at the same time. It also supports random and incremental seek functionality of the media player.
+
+All you have to do is `torrent-dl [magnet link]`
+
+It will automatically start playing once it has downloaded x% of the file.
 
 Inspired by youtube-dl. Pull requests are welcome.
 
@@ -14,7 +18,7 @@ Requires .deb and pypi packaging
 
 Installation on Ubuntu
 -----------------------
-sudo apt-get install libtorrent-rasterbar8 python-libtorrent vlc
+sudo apt-get install libtorrent-rasterbar8 python-libtorrent
 
 pip install -r requirements.txt
 
@@ -25,8 +29,6 @@ Installation on Mac OS
 brew update
 
 brew install caskroom/cask/brew-cask
-
-brew cask install vlc
 
 brew install boost --build-from-source --with-python --universal
 
