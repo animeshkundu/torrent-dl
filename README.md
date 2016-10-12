@@ -9,7 +9,7 @@ You can simultaneously watch and download a torrent at the same time. It also su
 
 All you have to do is `torrent-dl [magnet link]`
 
-It will automaticall start playing once it has downloaded a certain portion of the file depending on your internet speed.
+It will automatically start playing once it has downloaded a certain portion of the file depending on your internet speed.
 
 
 Installation on Ubuntu
