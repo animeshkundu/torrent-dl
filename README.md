@@ -14,12 +14,13 @@ It will automatically start playing once it has downloaded a certain portion of 
 
 Built on [pyflix](https://github.com/animeshkundu/pyflix). Contains both the torrent library and the media streamer. Feel free to build awesome stuff on top of it.
 
+PyPi package - [torrent-dl](https://pypi.python.org/pypi/torrent-dl)
 
 Installation on Ubuntu
 -----------------------
 sudo apt-get install libtorrent-rasterbar8 python-libtorrent
 
-pip install -r requirements.txt
+pip install torrent-dl
 
 
 Installation on Mac OS
@@ -38,12 +39,12 @@ sudo ln -s /usr/local/lib/python2.7/site-packages/libtorrent.so /Library/Python/
 sudo ln -s /usr/local/lib/python2.7/site-packages/python_libtorrent-1.0.3-py2.7.egg-info /Library/Python/2.7/site-packages/.
 
 
-pip install -r requirements.txt
+pip install torrent-dl
 
 
 Usage
 -----
-pyflix [-h] [--serve] [--port PORT] [--download DOWNLOAD] [--verbose] [--player PLAYER] magnet
+torrent-dl [-h] [--serve] [--port PORT] [--download DOWNLOAD] [--verbose] [--player PLAYER] magnet
 
 
 positional arguments:
