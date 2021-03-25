@@ -31,7 +31,7 @@ setup(
 	'pyaml==16.9.0',
 	'python-daemon==2.1.1',
 	'python-dateutil==2.5.3',
-	'PyYAML==3.12',
+	'PyYAML==5.4',
 	'qtfaststart==1.8',
 	'rebulk==0.7.6',
 	'six==1.10.0'
