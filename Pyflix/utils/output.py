@@ -1,6 +1,6 @@
 import logging
 
-from blessings import Terminal
+from blessed import Terminal
 from os import system
 from time import sleep
 

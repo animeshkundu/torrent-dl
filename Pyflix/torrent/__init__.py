@@ -1,7 +1,7 @@
 from __future__ import division
 
 import argparse
-import thread
+import threading
 import logging
 
 from os import _exit
@@ -9,10 +9,10 @@ from os.path import join, exists
 from time import sleep
 from datetime import datetime, timedelta
 
-from blessings import Terminal
+from blessed import Terminal
 from colorama import Fore
 from guessit import guessit
-from libtorrent import add_magnet_uri, session, storage_mode_t
+from libtorrent import add_magnet_uri, session
 
 from Pyflix.utils.constants import STATES
 from Pyflix.torrent.strategy import DefaultStrategy
@@ -32,7 +32,7 @@ class DownloadManager(object):
     def __init__(self, magnet, port=None, serve=False, player=None, save_path=None):
         self.settings = get_settings()
         self.magnet = magnet
-        self.save_path = save_path if save_path else self.settings.save_path 
+        self.save_path = save_path if save_path else str(self.settings.save_path)
         if port is None:
             port = DEFAULT_PORT
         port = int(port)
@@ -45,7 +45,7 @@ class DownloadManager(object):
         self.port = port
         self.serve = serve
         if player is None:
-            player = self.settings.players.default
+            player = str(self.settings.players.default)
         self.player = player
 
         self._video_file = None
@@ -64,15 +64,14 @@ class DownloadManager(object):
     def init_handle(self):
         params = {
             "save_path": self.save_path,
-            "allocation": storage_mode_t.storage_mode_sparse,
             }
         self.session = session()
         self.handle = add_magnet_uri(self.session, str(self.magnet), params)
 
-        up_limit = self.settings.limits.upload
+        up_limit = int(self.settings.limits.upload)
         if up_limit:
             self.handle.set_upload_limit(up_limit)
-        down_limit = self.settings.limits.download
+        down_limit = int(self.settings.limits.download)
         if down_limit:
             self.handle.set_download_limit(down_limit)
 
@@ -156,10 +155,14 @@ class DownloadManager(object):
             self.streaming = True
             pieces = self.status.pieces
             self._served_blocks = [False for i in range(len(pieces))]
-            self.stream_th = thread.start_new_thread(self.callback, (self, ))
+            self.stream_th = threading.Thread(target=self.callback, args=(self, ))
+            self.stream_th.daemon = True
+            self.stream_th.start()
             if not self.serve:
                 params = ()
-                self.player_th = thread.start_new_thread(self.output, params)
+                self.player_th = threading.Thread(target=self.output, args=params)
+                self.player_th.daemon = True
+                self.player_th.start()
 
     def block_served(self, block):
         self._served_blocks[block] = True

@@ -1,9 +1,8 @@
 import re
 import logging
 
-from SocketServer import ThreadingMixIn
-from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+from socketserver import ThreadingMixIn
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 from json import dumps
 from os import fstat
@@ -41,7 +40,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
                  "peers": manager.status.num_peers,
                  "streaming": manager.streaming}
         data = dumps(dict_)
-        self.wfile.write(data)
+        self.wfile.write(data.encode('utf-8'))
 
     def do_GET(self):
         if self.path == "/status":
@@ -63,8 +62,8 @@ class VideoHandler(SimpleHTTPRequestHandler):
 
         def get_blocks_for_range(range_from, range_to):
             length = get_piece_length()
-            block_from = self.range_from / length
-            block_to = self.range_to / length
+            block_from = self.range_from // length
+            block_to = self.range_to // length
             return block_from, block_to
 
         def is_block_available(block_number):
@@ -105,7 +104,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
         total_length = fs[6]
         try:
             self.range_from, self.range_to = parse_range_header(
-                self.headers.getheader("Range"), total_length)
+                self.headers.get("Range"), total_length)
         except InvalidRangeHeader:
             log.warning("Range header parsing failed, "
                             "serving complete file")

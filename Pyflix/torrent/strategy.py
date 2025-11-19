@@ -27,7 +27,7 @@ class DefaultStrategy(object):
             self.handle.piece_priority(i, 7)
             self.handle.set_piece_deadline(i, 3000)
 
-        self.chunks_strat = len(status.pieces) / 30
+        self.chunks_strat = len(status.pieces) // 30
 
     def block_requested(self, block_requested):
         if not self.holding_stream:
@@ -86,17 +86,17 @@ class DefaultStrategy(object):
         status = self.handle.status()
         last_piece = len(status.pieces) - 1
 
-        last_chunks = first_block + self.chunks_strat
+        last_chunks = int(first_block + self.chunks_strat)
         if last_chunks > last_piece:
             last_chunks = last_piece
-        for i in range(first_block, last_chunks):
+        for i in range(int(first_block), last_chunks):
             self.handle.piece_priority(i, 7)
             self.handle.set_piece_deadline(i, 10000)
 
-        last_chunks = first_block + self.chunks_strat * 2
+        last_chunks = int(first_block + self.chunks_strat * 2)
         if last_chunks > last_piece:
             last_chunks = last_piece
-        for i in range(first_block+self.chunks_strat, last_chunks):
+        for i in range(int(first_block+self.chunks_strat), last_chunks):
             self.handle.piece_priority(i, 3)
 
         self.piece_st = first_block + self.chunks_strat

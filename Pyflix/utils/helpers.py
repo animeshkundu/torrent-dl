@@ -2,6 +2,7 @@ import os
 import logging
 import signal
 import socket
+import yaml
 
 from daemon import DaemonContext
 from datetime import datetime
@@ -9,14 +10,45 @@ from os import mkdir
 from os.path import getmtime, exists, dirname, join
 from shutil import copyfile
 
-from altasetting import Settings
 from netifaces import interfaces, ifaddresses
-from ojota import set_data_source
 from lockfile import FileLock as Lock
 
 
 LOCKFILE = "/tmp/pyflix"
 log = logging.getLogger('pyflix.utils.helpers')
+
+
+class Settings:
+    """Simple settings class to replace altasetting with dot notation access."""
+    
+    def __init__(self, settings_file, default_file):
+        self.settings_file = settings_file
+        self.default_file = default_file
+        self._data = self._load()
+    
+    def _load(self):
+        """Load settings from file with fallback to defaults."""
+        try:
+            with open(self.settings_file, 'r') as f:
+                data = yaml.safe_load(f)
+        except (IOError, OSError):
+            with open(self.default_file, 'r') as f:
+                data = yaml.safe_load(f)
+        return self._dictToObj(data)
+    
+    def _dictToObj(self, d):
+        """Convert dict to object with attribute access."""
+        if isinstance(d, dict):
+            return type('obj', (object,), {k: self._dictToObj(v) for k, v in d.items()})()
+        elif isinstance(d, list):
+            return [self._dictToObj(item) for item in d]
+        else:
+            return d
+    
+    def __getattr__(self, name):
+        if name.startswith('_'):
+            return object.__getattribute__(self, name)
+        return getattr(self._data, name)
 
 
 def get_settings():
@@ -122,5 +154,6 @@ def set_config_dir():
     data_folder = "%s/.pyflix" % os.getenv("HOME")
     if not exists(data_folder):
         mkdir(data_folder)
-
-    set_data_source(data_folder)
+    
+    # Note: set_data_source from ojota was removed due to Python 3.10+ incompatibility
+    # The data folder is created above, which is the main functionality we need

@@ -11,10 +11,11 @@ from Pyflix.utils.settings import DEBUG
 
 def log_set_up(verbose=False):
     settings = get_settings()
-    if not exists(settings.save_path):
-        mkdir(settings.save_path)
+    save_path = str(settings.save_path)
+    if not exists(save_path):
+        mkdir(save_path)
 
-    logfile = "%s/pyflix.log" % (settings.save_path)
+    logfile = "%s/pyflix.log" % (save_path)
     handler = RotatingFileHandler(logfile, maxBytes=1e6, backupCount=10)
     formatter = logging.Formatter("%(asctime)s  %(name)-22s  "
                                   "%(levelname)-8s %(message)s")

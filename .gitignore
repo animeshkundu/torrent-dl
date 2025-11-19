@@ -1,1 +1,3 @@
 *.pyc
+torrent_dl.egg-info/
+colab_run.ipynb
