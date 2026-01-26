@@ -96,7 +96,7 @@ torrent-dl/
 pip install -r requirements.txt
 
 # Run the application
-python -m torrent-dl <magnet_link>
+torrent-dl <magnet_link>
 
 # Run validation (lint + test)
 ./scripts/validate.sh

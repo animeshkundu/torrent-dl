@@ -32,6 +32,8 @@ jobs:
   lint:
     name: Lint & Format
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -57,6 +59,8 @@ jobs:
     name: Test (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
     needs: lint
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -100,6 +104,8 @@ jobs:
   security:
     name: Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -160,6 +166,7 @@ jobs:
     name: Full Validation
     runs-on: ubuntu-latest
     needs: [lint, test, security]
+    permissions: {}
     if: always()
     steps:
       - name: Check job results
