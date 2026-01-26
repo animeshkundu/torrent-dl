@@ -29,22 +29,46 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             const textToCopy = btn.getAttribute('data-copy');
             
-            navigator.clipboard.writeText(textToCopy).then(function() {
-                btn.classList.add('copied');
-                
-                // Show checkmark temporarily
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                
-                setTimeout(function() {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = originalHTML;
-                }, 2000);
-            }).catch(function(err) {
-                console.error('Failed to copy:', err);
-            });
+            // Try modern clipboard API first, fallback to older method
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(function() {
+                    showCopiedFeedback(btn);
+                }).catch(function() {
+                    fallbackCopy(textToCopy, btn);
+                });
+            } else {
+                fallbackCopy(textToCopy, btn);
+            }
         });
     });
+    
+    function fallbackCopy(text, btn) {
+        // Fallback for older browsers or non-HTTPS
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showCopiedFeedback(btn);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+        document.body.removeChild(textArea);
+    }
+    
+    function showCopiedFeedback(btn) {
+        btn.classList.add('copied');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        
+        setTimeout(function() {
+            btn.classList.remove('copied');
+            btn.innerHTML = originalHTML;
+        }, 2000);
+    }
     
     // Platform tabs
     const platformTabs = document.querySelectorAll('.platform-tab');
