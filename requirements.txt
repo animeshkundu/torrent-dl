@@ -1,16 +1,35 @@
-altasetting==0.1.1
-babelfish==0.5.5
-blessings==1.6
-colorama==0.3.7
-docutils==0.12
-guessit==2.1.0
-lockfile==0.12.2
-netifaces==0.10.5
-Ojota==3.1.2
-pyaml==16.9.0
-python-daemon==2.1.1
-python-dateutil==2.5.3
-PyYAML==3.12
-qtfaststart==1.8
-rebulk==0.7.6
-six==1.10.0
+# Core dependencies for torrent-dl
+# Note: libtorrent-rasterbar must be installed via system package manager
+#   Ubuntu: sudo apt-get install python3-libtorrent
+#   macOS:  brew install libtorrent-rasterbar
+
+# Settings and configuration
+altasetting>=0.1.1
+pyaml>=21.10.1
+PyYAML>=6.0
+
+# Torrent info parsing
+guessit>=3.4.0
+babelfish>=0.6.0
+rebulk>=3.1.0
+
+# Terminal UI
+blessings>=1.7
+colorama>=0.4.4
+
+# Network utilities
+netifaces>=0.11.0
+
+# Data management
+Ojota>=3.1.2
+
+# MP4 fast-start support
+qtfaststart>=1.8
+
+# Daemon support
+python-daemon>=2.3.0
+lockfile>=0.12.2
+
+# Misc utilities
+python-dateutil>=2.8.2
+six>=1.16.0

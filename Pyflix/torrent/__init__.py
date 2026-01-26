@@ -1,8 +1,13 @@
 from __future__ import division
 
 import argparse
-import thread
 import logging
+
+# Python 2/3 compatibility
+try:
+    import _thread as thread  # Python 3
+except ImportError:
+    import thread  # Python 2
 
 from os import _exit
 from os.path import join, exists

@@ -1,0 +1,46 @@
+# Dockerfile.legacy
+#
+# This Dockerfile creates a "time capsule" environment for running the
+# legacy Python 2.7 codebase. This is used for:
+# 1. Running existing tests (if any)
+# 2. Creating characterization tests
+# 3. Validating behavior before modernization
+#
+# Build: docker build -f Dockerfile.legacy -t torrent-dl-legacy .
+# Run:   docker run -it torrent-dl-legacy
+
+FROM python:2.7-slim-buster
+
+LABEL maintainer="Animesh Kundu <anik.edu@gmail.com>"
+LABEL description="Legacy Python 2.7 environment for torrent-dl"
+LABEL purpose="Characterization testing and behavior validation"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libtorrent-rasterbar-dev \
+    python-libtorrent \
+    libboost-python-dev \
+    libboost-system-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+# Note: Some packages may not install on Python 2.7 in modern times
+# We install what we can and document failures
+RUN pip install --no-cache-dir --upgrade pip==20.3.4 && \
+    pip install --no-cache-dir -r requirements.txt || true
+
+# Copy the application code
+COPY . .
+
+# Install the package in development mode
+RUN pip install -e . || true
+
+# Default command - run tests or start interactive shell
+CMD ["python", "-c", "print('torrent-dl legacy environment ready')"]

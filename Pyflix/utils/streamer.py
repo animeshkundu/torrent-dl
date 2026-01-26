@@ -1,9 +1,14 @@
 import re
 import logging
 
-from SocketServer import ThreadingMixIn
-from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+# Python 2/3 compatibility
+try:
+    from socketserver import ThreadingMixIn  # Python 3
+    from http.server import HTTPServer, SimpleHTTPRequestHandler
+except ImportError:
+    from SocketServer import ThreadingMixIn  # Python 2
+    from BaseHTTPServer import HTTPServer
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
 
 from json import dumps
 from os import fstat
