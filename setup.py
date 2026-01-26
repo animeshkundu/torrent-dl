@@ -3,9 +3,12 @@
 
 from setuptools import setup, find_packages
 
-# Read long description from README
-with open('README.md', encoding='utf-8') as f:
-    long_description = f.read()
+# Read long description from README if it exists
+try:
+    with open('README.md', encoding='utf-8') as f:
+        long_description = f.read()
+except FileNotFoundError:
+    long_description = 'Python library to watch and download torrents at the same time'
 
 setup(
     name='torrent-dl',

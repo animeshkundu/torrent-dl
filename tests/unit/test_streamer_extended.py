@@ -18,10 +18,7 @@ class TestThreadedHTTPServer:
     def test_threaded_http_server_is_http_server(self):
         """ThreadedHTTPServer should inherit from HTTPServer."""
         from Pyflix.utils.streamer import ThreadedHTTPServer
-        try:
-            from http.server import HTTPServer
-        except ImportError:
-            from BaseHTTPServer import HTTPServer
+        from http.server import HTTPServer
         assert issubclass(ThreadedHTTPServer, HTTPServer)
 
 

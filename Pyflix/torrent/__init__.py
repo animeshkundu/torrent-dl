@@ -3,11 +3,11 @@ from __future__ import division
 import argparse
 import logging
 
-# Python 2/3 compatibility
+# Python 2/3 compatibility for threading
 try:
-    import _thread as thread  # Python 3
+    import _thread  # Python 3
 except ImportError:
-    import thread  # Python 2
+    import thread as _thread  # Python 2
 
 from os import _exit
 from os.path import join, exists
@@ -161,10 +161,10 @@ class DownloadManager(object):
             self.streaming = True
             pieces = self.status.pieces
             self._served_blocks = [False for i in range(len(pieces))]
-            self.stream_th = thread.start_new_thread(self.callback, (self, ))
+            self.stream_th = _thread.start_new_thread(self.callback, (self, ))
             if not self.serve:
                 params = ()
-                self.player_th = thread.start_new_thread(self.output, params)
+                self.player_th = _thread.start_new_thread(self.output, params)
 
     def block_served(self, block):
         self._served_blocks[block] = True

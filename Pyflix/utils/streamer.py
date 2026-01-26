@@ -68,8 +68,8 @@ class VideoHandler(SimpleHTTPRequestHandler):
 
         def get_blocks_for_range(range_from, range_to):
             length = get_piece_length()
-            block_from = self.range_from / length
-            block_to = self.range_to / length
+            block_from = self.range_from // length
+            block_to = self.range_to // length
             return block_from, block_to
 
         def is_block_available(block_number):

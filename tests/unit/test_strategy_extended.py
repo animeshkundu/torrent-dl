@@ -31,16 +31,18 @@ class TestDefaultStrategyExtended:
         return settings
 
     @patch('Pyflix.torrent.strategy.get_settings')
-    def test_initial_calculates_chunks_strat(self, mock_get_settings, mock_settings, mock_manager):
-        """initial() should calculate chunks_strat based on piece count."""
+    def test_initial_updates_chunks_strat(self, mock_get_settings, mock_settings, mock_manager):
+        """initial() should update chunks_strat from piece count."""
         mock_get_settings.return_value = mock_settings
         from Pyflix.torrent.strategy import DefaultStrategy
         
         strategy = DefaultStrategy(mock_manager)
+        original_chunks = strategy.chunks_strat
         strategy.initial()
         
-        # chunks_strat should be updated based on piece count
-        # len(pieces) / 30 = 100 / 30 = 3
+        # chunks_strat gets recalculated to len(pieces) / 30
+        # With 100 pieces, this should be 100 / 30 = 3
+        # Regardless of initial value, it should be a reasonable number
         assert strategy.chunks_strat >= 1
 
     @patch('Pyflix.torrent.strategy.get_settings')
