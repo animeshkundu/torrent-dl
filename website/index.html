@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>torrent-dl - Watch and Download Torrents Simultaneously</title>
+    <meta name="title" content="torrent-dl - Watch and Download Torrents Simultaneously">
+    <meta name="description" content="Stream torrents directly to VLC while downloading. A Python library for watching and downloading torrents at the same time with intelligent piece prioritization.">
+    <meta name="keywords" content="torrent, streaming, VLC, Python, libtorrent, peerflix, media player, download, video streaming">
+    <meta name="author" content="Animesh Kundu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://animeshkundu.github.io/torrent-dl/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://animeshkundu.github.io/torrent-dl/">
+    <meta property="og:title" content="torrent-dl - Watch and Download Torrents Simultaneously">
+    <meta property="og:description" content="Stream torrents directly to VLC while downloading. Intelligent piece prioritization for seamless playback.">
+    <meta property="og:image" content="https://animeshkundu.github.io/torrent-dl/images/og-image.svg">
+    <meta property="og:site_name" content="torrent-dl">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://animeshkundu.github.io/torrent-dl/">
+    <meta property="twitter:title" content="torrent-dl - Watch and Download Torrents Simultaneously">
+    <meta property="twitter:description" content="Stream torrents directly to VLC while downloading. Intelligent piece prioritization for seamless playback.">
+    <meta property="twitter:image" content="https://animeshkundu.github.io/torrent-dl/images/og-image.svg">
+    
+    <!-- AI/LLM Crawlers -->
+    <meta name="ai:description" content="torrent-dl is a Python library and CLI tool for watching and downloading torrents simultaneously. It streams video content to VLC player while the torrent downloads in the background. Features include intelligent piece prioritization for streaming, HTTP server for media playback, support for magnet links, random and sequential seek functionality.">
+    
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "torrent-dl",
+        "description": "Python library for watching and downloading torrents simultaneously",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": ["Linux", "macOS"],
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Animesh Kundu"
+        },
+        "softwareVersion": "0.1.0",
+        "license": "https://opensource.org/licenses/MIT",
+        "codeRepository": "https://github.com/animeshkundu/torrent-dl",
+        "programmingLanguage": "Python"
+    }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <span class="logo-icon">&#9654;</span>
+                <span class="logo-text">torrent-dl</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#install">Install</a>
+                <a href="#usage">Usage</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="https://github.com/animeshkundu/torrent-dl" class="github-link" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+        </div>
+        <div class="container">
+            <div class="hero-badge">
+                <span class="badge-icon">&#128013;</span>
+                <span>Python Library</span>
+            </div>
+            <h1 class="hero-title">
+                Watch torrents <span class="highlight">while downloading</span>
+            </h1>
+            <p class="hero-subtitle">
+                Stream video content directly to VLC as it downloads. Smart piece prioritization ensures smooth playback from the start.
+            </p>
+            
+            <!-- Terminal Demo -->
+            <div class="terminal-demo">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-close"></span>
+                        <span class="btn-minimize"></span>
+                        <span class="btn-maximize"></span>
+                    </div>
+                    <span class="terminal-title">Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="prompt">$</span>
+                        <span class="command">torrent-dl "magnet:?xt=urn:btih:..."</span>
+                    </div>
+                    <div class="terminal-line output">
+                        <span>Downloading metadata...</span>
+                    </div>
+                    <div class="terminal-line output">
+                        <span>Starting download: movie.mp4</span>
+                    </div>
+                    <div class="terminal-line output highlight-line">
+                        <span>Serving on http://localhost:1149</span>
+                    </div>
+                    <div class="terminal-line output">
+                        <span>Launching VLC player...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Install -->
+            <div class="quick-install" id="install">
+                <h3>Installation</h3>
+                <div class="install-steps">
+                    <div class="install-step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p class="step-label">Install libtorrent</p>
+                            <div class="code-block">
+                                <code>sudo apt-get install python3-libtorrent</code>
+                                <button class="copy-btn" data-copy="sudo apt-get install python3-libtorrent" aria-label="Copy to clipboard">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="install-step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p class="step-label">Install torrent-dl</p>
+                            <div class="code-block">
+                                <code>pip install torrent-dl</code>
+                                <button class="copy-btn" data-copy="pip install torrent-dl" aria-label="Copy to clipboard">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built for streaming</h2>
+                <p>Everything you need for seamless torrent playback</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#9654;</div>
+                    <h3>Instant Playback</h3>
+                    <p>Start watching within seconds. Smart piece prioritization downloads the beginning of files first for immediate playback.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128257;</div>
+                    <h3>Seek Support</h3>
+                    <p>Skip ahead freely. The download strategy adapts to your viewing position, fetching needed pieces on demand.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#127760;</div>
+                    <h3>HTTP Streaming</h3>
+                    <p>Built-in HTTP server serves content to any media player. Supports range requests for proper seeking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128190;</div>
+                    <h3>Keep Downloads</h3>
+                    <p>Files are saved to disk as they download. Watch now, keep forever.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128279;</div>
+                    <h3>Magnet Links</h3>
+                    <p>Works with magnet URIs. Just paste a link and start watching.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#9881;</div>
+                    <h3>Configurable</h3>
+                    <p>Custom download paths, port settings, upload/download limits. Tune it to your needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Section -->
+    <section class="usage" id="usage">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple to use</h2>
+                <p>One command to start streaming</p>
+            </div>
+            <div class="usage-content">
+                <div class="usage-examples">
+                    <div class="usage-example">
+                        <h4>Basic usage</h4>
+                        <div class="code-block large">
+                            <code>torrent-dl "magnet:?xt=urn:btih:..."</code>
+                            <button class="copy-btn" data-copy='torrent-dl "magnet:?xt=urn:btih:..."' aria-label="Copy">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                        <p class="example-desc">Opens VLC and starts playback automatically</p>
+                    </div>
+                    <div class="usage-example">
+                        <h4>Server mode</h4>
+                        <div class="code-block large">
+                            <code>torrent-dl --serve "magnet:?xt=urn:btih:..."</code>
+                            <button class="copy-btn" data-copy='torrent-dl --serve "magnet:?xt=urn:btih:..."' aria-label="Copy">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                        <p class="example-desc">Starts HTTP server without launching VLC</p>
+                    </div>
+                    <div class="usage-example">
+                        <h4>Custom port and path</h4>
+                        <div class="code-block large">
+                            <code>torrent-dl -p 8080 -d ~/Movies "magnet:..."</code>
+                            <button class="copy-btn" data-copy='torrent-dl -p 8080 -d ~/Movies "magnet:..."' aria-label="Copy">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                        <p class="example-desc">Serve on port 8080, save to ~/Movies</p>
+                    </div>
+                </div>
+                <div class="options-table">
+                    <h4>Command options</h4>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><code>--serve</code></td>
+                                <td>Run as HTTP server without launching VLC</td>
+                            </tr>
+                            <tr>
+                                <td><code>-p, --port</code></td>
+                                <td>HTTP server port (default: 1149)</td>
+                            </tr>
+                            <tr>
+                                <td><code>-d, --download</code></td>
+                                <td>Download directory path</td>
+                            </tr>
+                            <tr>
+                                <td><code>--verbose</code></td>
+                                <td>Show detailed logging output</td>
+                            </tr>
+                            <tr>
+                                <td><code>--player</code></td>
+                                <td>Media player to use (default: vlc)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How it works</h2>
+                <p>Smart downloading for smooth streaming</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">1</div>
+                    <h4>Fetch Metadata</h4>
+                    <p>Connect to the swarm and download torrent metadata to identify files and their structure.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">2</div>
+                    <h4>Prioritize Pieces</h4>
+                    <p>Download the first pieces of the video file at high priority for immediate playback.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">3</div>
+                    <h4>Start Streaming</h4>
+                    <p>Launch HTTP server and begin serving content to VLC as pieces arrive.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">4</div>
+                    <h4>Adaptive Strategy</h4>
+                    <p>As you seek or skip, the strategy shifts to fetch the pieces you need next.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="requirements">
+        <div class="container">
+            <div class="section-header">
+                <h2>Requirements</h2>
+                <p>What you need to get started</p>
+            </div>
+            <div class="req-grid">
+                <div class="req-card">
+                    <div class="req-icon">&#128013;</div>
+                    <h4>Python 3.8+</h4>
+                    <p>Modern Python installation required</p>
+                </div>
+                <div class="req-card">
+                    <div class="req-icon">&#128230;</div>
+                    <h4>libtorrent</h4>
+                    <p>System library for BitTorrent protocol</p>
+                </div>
+                <div class="req-card">
+                    <div class="req-icon">&#127909;</div>
+                    <h4>VLC Player</h4>
+                    <p>For automatic media playback</p>
+                </div>
+            </div>
+            <div class="platform-install">
+                <h4>Platform-specific installation</h4>
+                <div class="platform-tabs">
+                    <button class="platform-tab active" data-platform="ubuntu">Ubuntu/Debian</button>
+                    <button class="platform-tab" data-platform="macos">macOS</button>
+                </div>
+                <div class="platform-content">
+                    <div class="platform-panel active" id="ubuntu">
+                        <div class="code-block">
+                            <code>sudo apt-get install libtorrent-rasterbar-dev python3-libtorrent vlc</code>
+                            <button class="copy-btn" data-copy="sudo apt-get install libtorrent-rasterbar-dev python3-libtorrent vlc" aria-label="Copy">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="platform-panel" id="macos">
+                        <div class="code-block">
+                            <code>brew install libtorrent-rasterbar vlc</code>
+                            <button class="copy-btn" data-copy="brew install libtorrent-rasterbar vlc" aria-label="Copy">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Start streaming today</h2>
+            <p>Watch your torrents without waiting for the full download.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/animeshkundu/torrent-dl" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+                    View on GitHub
+                </a>
+                <a href="https://pypi.org/project/torrent-dl/" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+                    PyPI Package
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-icon">&#9654;</span>
+                        <span class="logo-text">torrent-dl</span>
+                    </a>
+                    <p>Watch and download torrents simultaneously.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Project</h4>
+                        <ul>
+                            <li><a href="https://github.com/animeshkundu/torrent-dl">GitHub</a></li>
+                            <li><a href="https://pypi.org/project/torrent-dl/">PyPI</a></li>
+                            <li><a href="https://github.com/animeshkundu/torrent-dl/issues">Issues</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Documentation</h4>
+                        <ul>
+                            <li><a href="#install">Installation</a></li>
+                            <li><a href="#usage">Usage Guide</a></li>
+                            <li><a href="#how-it-works">How It Works</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Related</h4>
+                        <ul>
+                            <li><a href="https://www.libtorrent.org/">libtorrent</a></li>
+                            <li><a href="https://www.videolan.org/vlc/">VLC Player</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built by <a href="https://github.com/animeshkundu">Animesh Kundu</a></p>
+                <p>MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
