@@ -1,0 +1,73 @@
+# torrent-dl
+
+> Watch and download torrents simultaneously
+
+## Overview
+
+torrent-dl is a Python library and CLI tool that allows you to stream video content from torrents directly to VLC player while the download is still in progress. It uses intelligent piece prioritization to ensure smooth playback.
+
+## Key Features
+
+- Stream torrents to VLC as they download
+- Smart piece prioritization for immediate playback
+- Seek support with adaptive download strategy
+- Built-in HTTP server for media streaming
+- Works with magnet links
+- Configurable download paths and ports
+
+## Installation
+
+Requires Python 3.8+ and libtorrent system library.
+
+Ubuntu/Debian:
+```
+sudo apt-get install python3-libtorrent
+pip install torrent-dl
+```
+
+macOS:
+```
+brew install libtorrent-rasterbar
+pip install torrent-dl
+```
+
+## Usage
+
+Basic usage:
+```
+torrent-dl "magnet:?xt=urn:btih:..."
+```
+
+Server mode (no VLC):
+```
+torrent-dl --serve "magnet:?xt=urn:btih:..."
+```
+
+Custom port and download path:
+```
+torrent-dl -p 8080 -d ~/Movies "magnet:..."
+```
+
+## Command Options
+
+- `--serve`: Run HTTP server without launching VLC
+- `-p, --port`: HTTP server port (default: 1149)
+- `-d, --download`: Download directory path
+- `--verbose`: Show detailed logging
+- `--player`: Media player to use (default: vlc)
+
+## How It Works
+
+1. Connects to torrent swarm and downloads metadata
+2. Prioritizes first pieces for immediate playback
+3. Starts HTTP server and VLC player
+4. Adapts download strategy based on seek position
+
+## Links
+
+- GitHub: https://github.com/animeshkundu/torrent-dl
+- PyPI: https://pypi.org/project/torrent-dl/
+
+## License
+
+MIT License

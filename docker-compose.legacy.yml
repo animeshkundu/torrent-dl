@@ -1,0 +1,59 @@
+# docker-compose.legacy.yml
+#
+# Docker Compose configuration for running the legacy torrent-dl environment.
+# This "time capsule" allows us to run and test the original Python 2.7 code.
+#
+# Usage:
+#   docker-compose -f docker-compose.legacy.yml build
+#   docker-compose -f docker-compose.legacy.yml run --rm torrent-dl-legacy
+#   docker-compose -f docker-compose.legacy.yml run --rm test
+#
+# Related: docs/agent-instructions/02-testing-and-validation.md
+
+version: '3.8'
+
+services:
+  torrent-dl-legacy:
+    build:
+      context: .
+      dockerfile: Dockerfile.legacy
+    container_name: torrent-dl-legacy
+    volumes:
+      - .:/app:ro
+      - ./downloads:/downloads
+    working_dir: /app
+    environment:
+      - HOME=/tmp
+      - PYTHONDONTWRITEBYTECODE=1
+    stdin_open: true
+    tty: true
+    command: ["python", "-c", "print('torrent-dl legacy environment ready. Use docker exec to run commands.')"]
+
+  # Service specifically for running tests
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.legacy
+    container_name: torrent-dl-test
+    volumes:
+      - .:/app:ro
+    working_dir: /app
+    environment:
+      - HOME=/tmp
+      - PYTHONDONTWRITEBYTECODE=1
+    command: ["python", "-m", "pytest", "tests/", "-v", "--tb=short"]
+
+  # Interactive shell for debugging
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile.legacy
+    container_name: torrent-dl-shell
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - HOME=/tmp
+    stdin_open: true
+    tty: true
+    command: ["/bin/bash"]

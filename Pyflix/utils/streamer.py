@@ -1,9 +1,14 @@
 import re
 import logging
 
-from SocketServer import ThreadingMixIn
-from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+# Python 2/3 compatibility
+try:
+    from socketserver import ThreadingMixIn  # Python 3
+    from http.server import HTTPServer, SimpleHTTPRequestHandler
+except ImportError:
+    from SocketServer import ThreadingMixIn  # Python 2
+    from BaseHTTPServer import HTTPServer
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
 
 from json import dumps
 from os import fstat
@@ -63,8 +68,8 @@ class VideoHandler(SimpleHTTPRequestHandler):
 
         def get_blocks_for_range(range_from, range_to):
             length = get_piece_length()
-            block_from = self.range_from / length
-            block_to = self.range_to / length
+            block_from = self.range_from // length
+            block_to = self.range_to // length
             return block_from, block_to
 
         def is_block_available(block_number):

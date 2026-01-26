@@ -5,7 +5,14 @@ This file contains fixtures that are available to all tests in the test suite.
 Add common test utilities and fixtures here.
 """
 
+import sys
 import pytest
+
+# Install mock libtorrent BEFORE any Pyflix imports
+# This is critical for testing without the actual libtorrent library
+from tests import mocks
+
+sys.modules['libtorrent'] = mocks
 
 
 @pytest.fixture
